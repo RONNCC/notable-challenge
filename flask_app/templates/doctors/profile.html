@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block displaysection %}
+<main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+  <h2> Welcome back doctor {{doctor["firstname"]}} {{doctor["lastname"]}}</h2>
+  <p> Here are your appointments!</p>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Patient First name</th>
+          <th>Patient Last name</th>
+          <th>Patient Phone</th>
+          <th>Appt Time</th>
+          <th>Kind</th>
+          <th> X </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for patientdate in appts %}
+        <tr>
+          <td>{{ loop.index  }}</td>
+          <td>{{ patientdate["firstname"] }}</td>
+          <td>{{ patientdate["lastname"] }}</td>
+          <td>{{ patientdate["phone"] }}</td>
+          <td>{{ patientdate["appt_time"] }}</td>
+          <td>{{ patientdate["kind"] }}</td>
+          <td><a href="{{ url_for('appt_delete',doctorid=doctor['rowid'], apptid=patientdate['rowid']) }}"> Delete </a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <hr/>
+  <center>
+    <h3> Add new Appt </h3>
+    <div>
+      <form action="{{ url_for('appt_create',doctorid=doctor['rowid'])}}" method='post' >
+        <div class="form-group col-sm-3">
+          <label for="apptPatient">Patient</label>
+          <select name="apptPatientID" class="form-control form-control-sm">
+            {% for pat in patients%}
+            <option value="{{pat['rowid']}}">{{pat['firstname']}} {{pat['lastname']}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group col-sm-3">
+          <label for="apptKind">Appt Kind</label>
+          <select name="apptKind" class="form-control form-control-sm">
+            {% for kind in apptKinds %}
+            <option value="{{kind}}">{{kind}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="apptTime">Appt Time</label>
+          <div class='input-group date col-sm-3' id='datetimepicker1'>
+              <input name='apptTime' type='text' class="form-control" required />
+              <span class="input-group-addon">
+                  <span class="glyphicon glyphicon-calendar"></span>
+              </span>
+          </div>
+
+          <script type="text/javascript">
+              $(function () {
+                  $('#datetimepicker1').datetimepicker({
+                    format:'YYYY-MM-DD HH:mm:ss',
+                  });
+              });
+          </script>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </center>
+</main>
+
+
+{% endblock %}

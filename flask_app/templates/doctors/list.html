@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block displaysection %}
+
+        <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3">
+          <h2> Your Doctors</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>First name</th>
+                  <th>Last name</th>
+                  <th>Phone</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for doctor in doctors_list %}
+                <tr>
+
+                  <td>{{ doctor["rowid"] }}</td>
+                  <td><a href="{{ url_for('doctor_profile', id=doctor['rowid']) }}"> {{ doctor["firstname"] }}</td>
+                  <td><a href="{{ url_for('doctor_profile', id=doctor['rowid']) }}"> {{ doctor["lastname"] }}</td>
+                  <td>{{ doctor["phone"] }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </main>
+{% endblock %}
